@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Job Application</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h2>Edit Job Application</h2>
+
+<form action="/update" method="post">
+
+    <!-- hidden id -->
+    <input type="hidden" name="id" th:value="${job.id}">
+
+    <input type="text"
+           name="companyName"
+           placeholder="Company Name"
+           th:value="${job.companyName}"
+           required>
+
+    <input type="text"
+           name="jobRole"
+           placeholder="Job Role"
+           th:value="${job.jobRole}"
+           required>
+
+    <select name="status">
+        <option value="APPLIED">Applied</option>
+<option value="INTERVIEW">Interview</option>
+<option value="SELECTED">Selected</option>
+<option value="REJECTED">Rejected</option>
+        
+    </select>
+    <div class="edit-container">
+    <form action="/update" method="post">
+        ...
+    </form>
+</div>
+    
+
+    <input type="date"
+           name="appliedDate"
+           th:value="${job.appliedDate}"
+           required>
+
+    <button type="submit">Update</button>
+
+</form>
+
+<br>
+
+<a href="/">⬅ Back to Home</a>
+
+</body>
+</html>

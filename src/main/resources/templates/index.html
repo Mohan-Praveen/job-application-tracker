@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h2>Job Application Tracker</h2>
+
+<!-- Dashboard -->
+<div class="dashboard">
+    <div>Total<br><b th:text="${total}"></b></div>
+    <div>Applied<br><b th:text="${applied}"></b></div>
+    <div>Interview<br><b th:text="${interview}"></b></div>
+    <div>Selected<br><b th:text="${selected}"></b></div>
+    <div>Rejected<br><b th:text="${rejected}"></b></div>
+</div>
+
+<!-- Search -->
+<form method="get">
+    <input name="keyword" placeholder="Search company or role"
+           th:value="${keyword}">
+    <button>Search</button>
+</form>
+
+<!-- Add Job -->
+<form action="/add" method="post">
+    <input name="companyName" placeholder="Company Name" required>
+    <input name="jobRole" placeholder="Job Role" required>
+
+    <select name="status">
+        <option>Applied</option>
+        <option>Interview</option>
+        <option>Selected</option>
+        <option>Rejected</option>
+    </select>
+
+    <input type="date" name="appliedDate" required>
+    <button>Add</button>
+</form>
+
+<!-- Table -->
+<table>
+    <tr>
+        <th>Company</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Action</th>
+    </tr>
+
+    <tr th:each="app : ${applications}">
+        <td th:text="${app.companyName}"></td>
+        <td th:text="${app.jobRole}"></td>
+
+        <td>
+            <form action="/updateStatus" method="post">
+                <input type="hidden" name="id" th:value="${app.id}">
+                <select name="status" onchange="this.form.submit()">
+<option value="APPLIED">Applied</option>
+<option value="INTERVIEW">Interview</option>
+<option value="SELECTED">Selected</option>
+<option value="REJECTED">Rejected</option>
+                </select>
+            </form>
+        </td>
+
+        <td th:text="${app.appliedDate}"></td>
+        <td>
+            <a th:href="@{/edit/{id}(id=${app.id})}">Edit</a> |
+            <a th:href="@{/delete/{id}(id=${app.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+<!-- Pagination -->
+<div>
+    <a th:if="${currentPage > 0}"
+       th:href="@{/(page=${currentPage-1}, keyword=${keyword})}">Prev</a>
+
+    <span>Page <b th:text="${currentPage+1}"></b></span>
+
+    <a th:if="${currentPage+1 < totalPages}"
+       th:href="@{/(page=${currentPage+1}, keyword=${keyword})}">Next</a>
+</div>
+
+</body>
+</html>
